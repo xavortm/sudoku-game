@@ -1,0 +1,40 @@
+.App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 3em;
+
+  button {
+    margin-top: 2em;
+  }
+}
+
+.board {
+  --cell-size: 4rem;
+
+  display: grid;
+  grid-template-columns: repeat(9, var(--cell-size));
+  grid-template-rows: repeat(9, var(--cell-size));
+
+  background: black;
+  border: 3px solid black;
+  column-gap: 1px;
+  row-gap: 1px;
+
+  span {
+    line-height: var(--cell-size);
+    text-align: center;
+    background: white;
+    font-size: 2em;
+    line-height: var(--cell-size);
+
+    &:hover {
+      background: #fafafa;
+    }
+  }
+
+  [data-value="0"] {
+    color: transparent;
+  }
+}
