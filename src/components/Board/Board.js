@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import generateEmptyBoard from "../../utilities/boardUtils";
+import { generateFromApi } from "../../utilities/sudoku";
 import "./Board.scss";
 
 import Cell from "./Cell";
@@ -14,11 +15,13 @@ const Board = ({ size }) => {
   // Hold the current table state (state of the game)
   const [tableData, setTableData] = useState(generateEmptyBoard());
 
-  // const updateValue = (value, index) => {
-  //   const newData = [...tableData];
-  //   newData[index].value = value;
-  //   setTableData(newData);
-  // };
+  useEffect(() => {
+    fetch("https://sugoku.herokuapp.com/board?difficulty=easy")
+      .then((res) => res.json())
+      .then((result) => {
+        setTableData(generateFromApi(result.board));
+      });
+  }, []);
 
   const updateValue = useCallback(
     (value, index) => {
@@ -38,6 +41,7 @@ const Board = ({ size }) => {
       <Cell
         key={cell.id}
         id={cell.id}
+        write={cell.write}
         value={cell.value}
         updateValue={updateValue}
       >

@@ -1,19 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-const isNumber = (str) => {
-  return str.length === 1 && str.match(/[0-9]/i);
-};
+import { isNumber } from "../../utilities/sudoku";
 
-const Cell = ({ value, id, updateValue }) => {
+const Cell = ({ value, id, updateValue, write }) => {
   const [isIn, setIsIn] = useState(false);
 
   const downHandler = useCallback(
     ({ key }) => {
-      if (isIn && isNumber(key)) {
+      if (isIn && isNumber(key) && write) {
         updateValue(key, id);
       }
     },
-    [updateValue, id, isIn]
+    [updateValue, id, isIn, write]
   );
 
   useEffect(() => {
@@ -46,6 +44,7 @@ const Cell = ({ value, id, updateValue }) => {
       onClick={handleClick}
       className="cell"
       data-value={value}
+      data-write={write}
     >
       {value}
     </span>

@@ -21,6 +21,7 @@
   border: 3px solid black;
   column-gap: 1px;
   row-gap: 1px;
+  position: relative;
 
   span {
     line-height: var(--cell-size);
@@ -34,7 +35,28 @@
     }
   }
 
+  [data-write="true"] {
+    color: #777;
+  }
+
   [data-value="0"] {
     color: transparent;
+  }
+
+  &:before,
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: calc(var(--cell-size) * 3);
+    top: calc(var(--cell-size) * 3);
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &:after {
+    transform: rotate(90deg);
   }
 }
