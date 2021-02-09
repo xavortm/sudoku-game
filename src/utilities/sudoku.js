@@ -36,3 +36,13 @@ export const generateFromApi = (array) => {
 
   return generated;
 };
+
+export const cleanUserChanges = (array) => {
+  const cleanArray = [...array];
+
+  cleanArray.forEach((e) => {
+    e.value = e.write ? 0 : e.value;
+  });
+
+  return cleanArray;
+};

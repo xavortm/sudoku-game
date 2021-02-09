@@ -15,8 +15,6 @@ const Cell = ({ value, id, updateValue, write }) => {
   );
 
   useEffect(() => {
-    console.log("I rerendered");
-
     window.addEventListener("keydown", downHandler);
 
     return () => {
@@ -34,7 +32,9 @@ const Cell = ({ value, id, updateValue, write }) => {
 
   const handleClick = () => {
     // Clean the element if it's clicked.
-    updateValue("", id);
+    if (write) {
+      updateValue("", id);
+    }
   };
 
   return (

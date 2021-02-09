@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import generateEmptyBoard from "../../utilities/boardUtils";
-import { generateFromApi } from "../../utilities/sudoku";
+import { generateFromApi, cleanUserChanges } from "../../utilities/sudoku";
 import "./Board.scss";
 
 import Cell from "./Cell";
@@ -15,12 +15,16 @@ const Board = ({ size }) => {
   // Hold the current table state (state of the game)
   const [tableData, setTableData] = useState(generateEmptyBoard());
 
-  useEffect(() => {
+  const fetchNewSudoku = () => {
     fetch("https://sugoku.herokuapp.com/board?difficulty=easy")
       .then((res) => res.json())
       .then((result) => {
         setTableData(generateFromApi(result.board));
       });
+  };
+
+  useEffect(() => {
+    fetchNewSudoku();
   }, []);
 
   const updateValue = useCallback(
@@ -33,7 +37,11 @@ const Board = ({ size }) => {
   );
 
   const resetBoard = () => {
-    setTableData(generateEmptyBoard());
+    setTableData(cleanUserChanges(tableData));
+  };
+
+  const newBoard = () => {
+    fetchNewSudoku();
   };
 
   const tableHTML = tableData.map((cell) => {
@@ -53,7 +61,15 @@ const Board = ({ size }) => {
   return (
     <>
       <div className="board">{tableHTML}</div>
-      <button onClick={resetBoard}>Reset Board</button>
+      <div className="buttons">
+        <div className="difficulty">
+          <span>
+            <strong>Difficulty:</strong> Easy
+          </span>
+          <button onClick={resetBoard}>Reset Sudoku</button>
+          <button onClick={newBoard}>New Sudoku</button>
+        </div>
+      </div>
     </>
   );
 };
